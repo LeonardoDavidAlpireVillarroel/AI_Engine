@@ -44,6 +44,7 @@ namespace AIEngine.Movement.Algorithms
             Vector2 direction = OrientationToVector(agent.orientation);
             Vector2 circleCenter = agent.position + wanderDistance * direction;
 
+
             // Calcula el offset sobre el borde del círculo en la dirección del objetivo
             Vector2 offset = wanderRadius * OrientationToVector(targetOrientation);
 

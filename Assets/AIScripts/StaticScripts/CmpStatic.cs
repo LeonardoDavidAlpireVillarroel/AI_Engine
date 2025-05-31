@@ -31,11 +31,9 @@ namespace AIEngine.Movement.Components.Agents
             }
             else
             {
-                // Si no tiene Seek, sincroniza su posición con el transform (es un objetivo o estático)
                 agent.position = new System.Numerics.Vector2(transform.position.x, transform.position.z);
             }
 
-            // Siempre actualiza la posición del GameObject con respecto al agent
             transform.position = new Vector3(agent.position.X, 0, agent.position.Y);
 
             float angle = -agent.orientation * Mathf.Rad2Deg;

@@ -18,6 +18,7 @@ public class SimpleCharacterMovement : MonoBehaviour
         controller = GetComponent<CharacterController>();
         cmpKinematic = GetComponent<CmpKinematic>();
         agent = cmpKinematic.GetAgent();
+
     }
 
     private void Update()

@@ -24,7 +24,7 @@ namespace AIEngine.Movement.Algorithms
         public void SetTarget(AgStatic target) { this.target = target; }
 
 
-        public SteeringOutput GetSteering()
+        public virtual SteeringOutput GetSteering()
         {
             SteeringOutput sOut = new SteeringOutput();
 
@@ -40,6 +40,7 @@ namespace AIEngine.Movement.Algorithms
 
             // Limitar velocidad angular
             sOut.angular = MathF.Max(-maxAngularSpeed, MathF.Min(sOut.angular, maxAngularSpeed));
+            //sOut.angular = 0;
 
             return sOut;
         }

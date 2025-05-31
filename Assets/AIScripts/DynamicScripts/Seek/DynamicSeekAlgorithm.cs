@@ -26,6 +26,7 @@ namespace AIEngine.Movement.Algorithms
         public virtual SteeringOutput GetSteering()
         {
             SteeringOutput sOut = new SteeringOutput();
+            sOut.linear= target.position - agent.position;
 
             Vector2 direction = target.position - agent.position;
 
