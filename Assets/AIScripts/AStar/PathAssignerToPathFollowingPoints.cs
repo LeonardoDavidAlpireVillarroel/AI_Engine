@@ -143,4 +143,77 @@ public class PathAssignerToPathFollowingPoints : MonoBehaviour
 
         return closest;
     }
+    public void AssignPath(Vector3 customTargetPos)
+    {
+        Graph graph = graphComponent.BuildGraph();
+        Node closestNode = FindClosestNode(graph, pathOrigin.position);
+        Node endNode = FindClosestNode(graph, customTargetPos);
+
+        if (closestNode == null || endNode == null)
+        {
+            Debug.LogWarning("[PathAssigner] Nodo más cercano o nodo destino inválido.");
+            return;
+        }
+
+        if (closestNode.id == endNode.id)
+        {
+            return;
+        }
+
+        AStar astar = new AStar();
+        List<Node> path = astar.FindPath(graph, closestNode, endNode);
+
+        if (path == null || path.Count == 0)
+        {
+            Debug.LogWarning("[PathAssigner] No se encontró un camino entre nodos.");
+            return;
+        }
+
+        Vector2[] unityVertexes = new Vector2[path.Count];
+        for (int i = 0; i < path.Count; i++)
+        {
+            unityVertexes[i] = new Vector2(path[i].position.X, path[i].position.Y);
+        }
+
+        pathFollowing.unityVertexes = unityVertexes;
+        pathFollowing.InitializePath();
+
+        CmpPathFollowing cmpPathFollowing = pathFollowing.GetComponent<CmpPathFollowing>();
+        if (cmpPathFollowing != null)
+        {
+            cmpPathFollowing.UpdatePath(pathFollowing);
+        }
+
+        Debug.Log($"[PathAssigner] Camino actualizado hacia destino personalizado: {closestNode.id} → {endNode.id} ({unityVertexes.Length} puntos)");
+    }
+
+    public void AssignPathToPosition(Vector3 targetPosition)
+    {
+        Graph graph = graphComponent.BuildGraph();
+        Node closestNode = FindClosestNode(graph, transform.position);
+        Node endNode = FindClosestNode(graph, targetPosition);
+
+        if (closestNode == null || endNode == null || closestNode.id == endNode.id)
+        {
+            return;
+        }
+
+        AStar astar = new AStar();
+        List<Node> path = astar.FindPath(graph, closestNode, endNode);
+
+        if (path == null || path.Count == 0)
+        {
+            return;
+        }
+
+        Vector2[] unityVertexes = new Vector2[path.Count];
+        for (int i = 0; i < path.Count; i++)
+        {
+            unityVertexes[i] = new Vector2(path[i].position.X, path[i].position.Y);
+        }
+
+        pathFollowing.unityVertexes = unityVertexes;
+        pathFollowing.InitializePath();
+    }
+
 }
