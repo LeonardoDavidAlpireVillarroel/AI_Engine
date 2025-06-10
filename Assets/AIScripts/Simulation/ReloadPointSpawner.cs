@@ -60,7 +60,11 @@ public class ReloadPointSpawner : MonoBehaviour
         if (currentReloadPoint == null)
         {
             SpawnReloadPoint();
-        }
+        }/*
+        else if (currentReloadPoint != null)
+        {
+            Destroy(currentReloadPoint);
+        }*/
     }
 
     private void SpawnReloadPoint()
