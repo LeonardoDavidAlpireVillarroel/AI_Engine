@@ -1,3 +1,4 @@
+using System.Threading;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -22,12 +23,10 @@ public class Projectile : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            // Aquí puede ir la lógica para dañar al jugador
             Debug.Log("Jugador golpeado por proyectil");
-
             Destroy(gameObject);
         }
-        else if (!other.CompareTag("Enemy")) // evitar chocar con el enemigo mismo
+        else if (!other.CompareTag("Enemy"))
         {
             Destroy(gameObject);
         }
