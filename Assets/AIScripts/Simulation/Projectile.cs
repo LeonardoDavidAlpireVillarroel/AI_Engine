@@ -25,6 +25,7 @@ public class Projectile : MonoBehaviour
         {
             Debug.Log("Jugador golpeado por proyectil");
             Destroy(gameObject);
+            other.gameObject.SetActive(false);
         }
         else if (!other.CompareTag("Enemy"))
         {
