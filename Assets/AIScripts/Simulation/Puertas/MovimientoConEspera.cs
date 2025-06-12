@@ -1,80 +1,89 @@
 using System.Collections;
+using System.Linq;
 using UnityEngine;
-using AIEngine.Movement.Components.Algorithms; // CmpSeek2
-using AIEngine.Movement.Components.Agents;     // CmpStatic2
+using AIEngine.Movement.Components.Algorithms;
+using AIEngine.Movement.Components.Agents;
 
 public class MovimientoConEspera : MonoBehaviour
 {
-    public DoorSystem puerta;
-    public Transform[] puntosDestino; // Los objetos deben tener CmpStatic2
-    public float distanciaMinima = 0.2f;
-    public float tiempoEspera = 5f;
+    public Transform destinoFinal; // Punto al que ir cuando todas las placas estén activadas
+    public PressurePlate[] placas; // Todas las placas del nivel
 
-    private int indiceActual = 0;
     private CmpSeek cmpSeek;
-    private bool esperando = false;
     private float velocidadOriginal;
+    private PressurePlate objetivoActual;
+    private bool esperando = false;
 
     void Start()
     {
         cmpSeek = GetComponent<CmpSeek>();
         velocidadOriginal = cmpSeek.maxSpeed;
 
-        if (puntosDestino.Length > 0)
-        {
-            AsignarNuevoDestino();
-        }
-        else
-        {
-            Debug.LogError("No se han asignado puntos de destino.");
-        }
+        BuscarYAsignarPlacaMasCercana(); // Primer destino: la placa más cercana
     }
 
     void Update()
     {
-        if (!esperando && cmpSeek.target != null)
+        if (!esperando && objetivoActual != null)
         {
-            float distancia = Vector3.Distance(transform.position, cmpSeek.target.transform.position);
-            if (distancia < distanciaMinima)
+            float distancia = Vector3.Distance(transform.position, objetivoActual.transform.position);
+            if (distancia < 0.3f && !objetivoActual.IsActivated())
             {
-                esperando = true;
-                StartCoroutine(EsperarYIrAlSiguiente());
+                StartCoroutine(EsperarYActivar());
             }
         }
     }
 
-    IEnumerator EsperarYIrAlSiguiente()
+    IEnumerator EsperarYActivar()
     {
+        esperando = true;
         cmpSeek.maxSpeed = 0;
 
-        Debug.Log("Esperando a que se abra la puerta...");
-        yield return new WaitUntil(() => puerta != null && puerta.IsOpen());
+        yield return new WaitUntil(() => objetivoActual.IsActivated());
 
-        indiceActual++;
-        if (indiceActual >= puntosDestino.Length)
+        if (TodasPlacasActivadas())
         {
-            cmpSeek.target = null;
-            yield break; // Ya no hay más destinos
+            CmpStatic destinoPuerta = destinoFinal.GetComponent<CmpStatic>();
+            cmpSeek.SetTarget(destinoPuerta);
+        }
+        else
+        {
+            BuscarYAsignarPlacaMasCercana();
         }
 
-        AsignarNuevoDestino();
         cmpSeek.maxSpeed = velocidadOriginal;
         esperando = false;
     }
 
-    void AsignarNuevoDestino()
+    void BuscarYAsignarPlacaMasCercana()
     {
-        Transform destino = puntosDestino[indiceActual];
-        CmpStatic agenteDestino = destino.GetComponent<CmpStatic>();
+        PressurePlate[] desactivadas = placas
+            .Where(p => !p.IsActivated())
+            .ToArray();
 
-        if (agenteDestino != null)
+        if (desactivadas.Length == 0)
         {
-            cmpSeek.SetTarget(agenteDestino);
+            Debug.Log("No quedan placas desactivadas.");
+            return;
+        }
+
+        objetivoActual = desactivadas
+            .OrderBy(p => Vector3.Distance(transform.position, p.transform.position))
+            .FirstOrDefault();
+
+        CmpStatic targetStatic = objetivoActual.GetComponent<CmpStatic>();
+        if (targetStatic != null)
+        {
+            cmpSeek.SetTarget(targetStatic);
         }
         else
         {
-            Debug.LogError($"El punto de destino '{destino.name}' no tiene un componente CmpStatic.");
+            Debug.LogError("La placa no tiene componente CmpStatic");
         }
     }
-}
 
+    bool TodasPlacasActivadas()
+    {
+        return placas.All(p => p.IsActivated());
+    }
+}

@@ -3961,6 +3961,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activationTime: 2
+  colorActivado: {r: 0, g: 1, b: 0, a: 1}
+  hundimiento: 0.1
 --- !u!114 &88323373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11269,12 +11271,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05b3e72801ababb4eaf4006bad4b5d4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  puerta: {fileID: 391796910}
-  puntosDestino:
-  - {fileID: 88323377}
-  - {fileID: 983854091}
-  distanciaMinima: 0.2
-  tiempoEspera: 5
+  destinoFinal: {fileID: 983854091}
+  placas:
+  - {fileID: 88323372}
+  - {fileID: 2091632933}
+  - {fileID: 877258696}
 --- !u!114 &480134577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19149,6 +19150,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activationTime: 2
+  colorActivado: {r: 0, g: 1, b: 0, a: 1}
+  hundimiento: 0.1
 --- !u!114 &877258697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22869,12 +22872,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05b3e72801ababb4eaf4006bad4b5d4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  puerta: {fileID: 391796910}
-  puntosDestino:
-  - {fileID: 2091632938}
-  - {fileID: 241666684}
-  distanciaMinima: 0.2
-  tiempoEspera: 5
+  destinoFinal: {fileID: 983854091}
+  placas:
+  - {fileID: 88323372}
+  - {fileID: 2091632933}
+  - {fileID: 877258696}
 --- !u!114 &1067920655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37434,12 +37436,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05b3e72801ababb4eaf4006bad4b5d4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  puerta: {fileID: 391796910}
-  puntosDestino:
-  - {fileID: 877258701}
-  - {fileID: 832858611}
-  distanciaMinima: 0.2
-  tiempoEspera: 5
+  destinoFinal: {fileID: 983854091}
+  placas:
+  - {fileID: 88323372}
+  - {fileID: 2091632933}
+  - {fileID: 877258696}
 --- !u!114 &1850879058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42665,6 +42666,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activationTime: 2
+  colorActivado: {r: 0, g: 1, b: 0, a: 1}
+  hundimiento: 0.1
 --- !u!114 &2091632934
 MonoBehaviour:
   m_ObjectHideFlags: 0
