@@ -1,18 +1,26 @@
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using TMPro;
+using UnityEditor;
+using System.Collections;
 
 public class ZonaDesaparicion : MonoBehaviour
 {
+    public TextMeshProUGUI texto;
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            // OPCIÓN 1: Desactivar el personaje
-            other.gameObject.SetActive(false);
-
-            // OPCIÓN 2: Destruir el personaje
-            // Destroy(other.gameObject);
-
-            Debug.Log($"{other.name} ha entrado en la zona de desaparición.");
+            Destroy(other.gameObject);
+            texto.gameObject.SetActive(true);
+            Tiempo();
+            EditorApplication.isPlaying = false;
         }
+    }
+    public IEnumerator Tiempo()
+    {
+
+        yield return new WaitForSecondsRealtime(5f);
     }
 }
